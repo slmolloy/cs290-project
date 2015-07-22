@@ -1,10 +1,9 @@
 angular.module('app')
-.controller('RegisterCtrl', function($scope, UserSvc) {
+.controller('RegisterCtrl', function($scope, UserSvc, $location) {
   $scope.register = function(username, password) {
     UserSvc.register(username, password)
     .then(function(response) {
-      // TODO: redirect to posts or some other page
-      $scope.$emit('register', response.data)
+      $location.path('/login').replace()
     })
   }
 })

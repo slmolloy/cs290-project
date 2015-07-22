@@ -9,15 +9,17 @@
     <div class='container'>
       <ul class='nav navbar-nav'>
         <li><a href='/#/'>Posts</a></li>
-        <li><a href='/#/register'>Register</a></li>
-        <li><a href='/#/login'>Login</a></li>
       </ul>
-      <p ng-if='currentUser' class='navbar-text navbar-right'>
-        Signed in as {{currentUser.username}}
-      </p>
-      <p ng-if='!currentUser' class='navbar-text navbar-right'>
-        Not signed in
-      </p>
+      <ul class='nav navbar-nav navbar-right'>
+        <li>
+          <a ng-if='currentUser' href='/#/logout'>Logout</a>
+          <a ng-if='!currentUser' href='/#/login'>Login</a>
+        </li>
+        <li>
+          <p ng-if='currentUser' class='navbar-text'>Signed in as {{currentUser.username}}</p>
+          <a ng-if='!currentUser' href='/#/register'>Register</a>
+        </li>
+      </ul>
     </div>
   </nav>
   <div ng-view></div>
