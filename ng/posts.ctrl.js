@@ -1,5 +1,5 @@
 angular.module('app')
-.controller('PostsCtrl', function($scope, PostsSvc) {
+.controller('PostsCtrl', function($scope, PostsSvc, WebSocketSvc) {
   $scope.addPost = function() {
     if ($scope.postBody) {
       PostsSvc.create({body: $scope.postBody})

@@ -1,20 +1,34 @@
 angular.module('app')
-.run(function($rootScope, $timeout) {
-  (function connect() {
-    var url = 'ws://localhost:3000'
-    var connection = new WebSocket(url)
-
-    connection.onopen = function() {
-      console.log('WebSocket connected')
+.service('WebSocketSvc', function($rootScope, $timeout, $window) {
+  function webSocketHost() {
+    if ($window.location.protocol === 'https:') {
+      return 'wss://' + window.location.host
+    } else {
+      return 'ws://' + window.location.host
     }
-    connection.onclose = function(e) {
+  }
+
+  var connection
+
+  var connect = function() {
+    connection = new WebSocket(webSocketHost())
+
+    connection.onclose = function (e) {
       console.log('WebSocket closed. Reconnecting...')
       $timeout(connect, 10*1000)
     }
+
     connection.onmessage = function(e) {
-      console.log(e)
       var payload = JSON.parse(e.data)
       $rootScope.$broadcast('ws:' + payload.topic, payload.data)
     }
-  }) ()
+  }
+  this.connect = connect
+
+  this.send = function(topic, data) {
+    var json = JSON.stringify({topic: topic, data: data})
+    connection.send(json)
+  }
+}).run(function (WebSocketSvc) {
+  WebSocketSvc.connect()
 })
