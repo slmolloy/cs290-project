@@ -1,5 +1,7 @@
 var _ = require('lodash')
 var ws = require('ws')
+var events = require('events')
+var eventEmitter = new events.EventEmitter()
 
 var clients = []
 
@@ -11,6 +13,11 @@ exports.connect = function(server) {
     ws.on('close', function() {
       _.remove(clients, ws)
     })
+    ws.on('message', function(message) {
+      var payload = JSON.parse(message)
+      var tag = 'ws:' + payload.topic
+      eventEmitter.emit('ws:' + payload.topic, payload.data)
+    })
   })
 }
 
@@ -20,3 +27,5 @@ exports.broadcast = function(topic, data) {
     client.send(json)
   })
 }
+
+exports.eventEmitter = eventEmitter

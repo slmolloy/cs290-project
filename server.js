@@ -10,8 +10,9 @@ app.use('/api/posts', require('./controllers/api/posts'))
 app.use('/api/sessions', require('./controllers/api/sessions'))
 app.use('/api/users', require('./controllers/api/users'))
 
-var server = app.listen(3000, function() {
-  console.log('Server listening on', 3000)
+var port = 3001
+var server = app.listen(port, function() {
+  console.log('Server listening on', port)
 })
 
 websockets.connect(server)

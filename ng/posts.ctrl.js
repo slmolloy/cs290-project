@@ -4,15 +4,36 @@ angular.module('app')
     if ($scope.postBody) {
       PostsSvc.create({body: $scope.postBody})
       .success(function(post) {
-        //$scope.posts.unshift(post)
         $scope.postBody = null
       })
+    }
+  }
+
+  $scope.markViewed = function(postid) {
+    WebSocketSvc.send('viewed_post', postid)
+  }
+
+  $scope.viewedMessage = function(post) {
+    if (post.viewed) {
+      return 'Viewed'
+    } else {
+      return 'Not viewed'
     }
   }
 
   $scope.$on('ws:new_post', function(_, post) {
     $scope.$apply(function() {
       $scope.posts.unshift(post)
+    })
+  })
+
+  $scope.$on('ws:markviewed_post', function(_, post) {
+    $scope.$apply(function() {
+      $scope.posts.forEach(function(p) {
+        if (post._id === p._id) {
+          p.viewed = true
+        }
+      })
     })
   })
 

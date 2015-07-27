@@ -1,7 +1,9 @@
 var Post = require('../../models/post')
+var db = require('../../db')
 var router = require('express').Router()
 var pubsub = require('../../pubsub')
 var websockets = require('../../websockets')
+var eventEmitter = websockets.eventEmitter
 
 router.get('/', function (req, res, next) {
   Post.find()
@@ -24,6 +26,22 @@ router.post('/', function(req, res, next) {
 
 pubsub.subscribe('new_post', function(post) {
   websockets.broadcast('new_post', post)
+})
+
+pubsub.subscribe('markviewed_post', function(post) {
+  websockets.broadcast('markviewed_post', post)
+})
+
+eventEmitter.on('ws:viewed_post', function(data) {
+  Post.find({_id: db.toObjectId(data)})
+  .exec(function(err, posts) {
+    if (err) { return next(err) }
+    posts[0].viewed = true
+    posts[0].save(function(err, post) {
+      if (err) { return next(err) }
+      pubsub.publish('markviewed_post', post)
+    })
+  })
 })
 
 module.exports = router
