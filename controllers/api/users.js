@@ -5,10 +5,10 @@ var User = require('../../models/user')
 var config = require('../../config')
 
 router.get('/', function(req, res, next) {
-  if (!req.headers['authorization']) {
+  if (!req.headers.authorization) {
     return res.sendStatus(401)
   }
-  var auth = jwt.decode(req.headers['authorization'].split(' ')[1], config.secret)
+  var auth = jwt.decode(req.headers.authorization.split(' ')[1], config.secret)
   User.findOne({username: auth.username}, function(err, user) {
     if (err) { return next(err) }
     res.json(user)

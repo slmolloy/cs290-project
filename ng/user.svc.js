@@ -6,7 +6,7 @@ angular.module('app')
   }
 
   svc.login = function(username, password) {
-    delete $http.defaults.headers['authorization']
+    delete $http.defaults.headers.authorization
     return $http.post('/api/sessions', {
       username: username, password: password
     }).then(function(val) {
@@ -18,7 +18,7 @@ angular.module('app')
   }
 
   svc.setstate = function(token, user) {
-    $http.defaults.headers['authorization'] = 'Bearer ' + token
+    $http.defaults.headers.authorization = 'Bearer ' + token
     $window.localStorage.setItem('token', token)
     $window.localStorage.setItem('user', JSON.stringify(user))
   }

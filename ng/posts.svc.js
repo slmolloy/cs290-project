@@ -4,7 +4,7 @@ angular.module('app')
     return $http.get('/api/posts')
   }
   this.create = function(post) {
-    $http.defaults.headers['authorization'] = 'Bearer ' + UserSvc.token
+    $http.defaults.headers.authorization = 'Bearer ' + UserSvc.token
     return $http.post('/api/posts', post)
   }
 })

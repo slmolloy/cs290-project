@@ -6,9 +6,9 @@ angular.module('app')
       var token = $window.localStorage.getItem('token')
       var user = JSON.parse(window.localStorage.getItem('user'))
       if (token == null) {
-        delete config.headers['authorization']
+        delete config.headers.authorization
       } else {
-        config.headers['authorization'] = 'Bearer ' + token
+        config.headers.authorization = 'Bearer ' + token
       }
       return config || $q.when(config)
     },
