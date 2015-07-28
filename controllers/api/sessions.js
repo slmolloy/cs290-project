@@ -6,15 +6,18 @@ var config = require('../../config')
 
 router.post('/', function(req, res, next) {
   User.findOne({username: req.body.username})
-  .select('password').select('username')
+  .select('password').select('username').select('token')
   .exec(function(err, user) {
     if (err) { return next(err) }
-    if (!user) { return res.send(401) }
+    if (!user) { return res.sendStatus(401) }
     bcrypt.compare(req.body.password, user.password, function(err, valid) {
       if (err) { return next(err) }
       if (!valid) { return res.sendStatus(401) }
-      var token = jwt.encode({username: user.username}, config.secret)
-      res.send(token)
+      res.json({
+        type: true,
+        data: {_id: user._id, username: user.username},
+        token: user.token
+      })
     })
   })
 })

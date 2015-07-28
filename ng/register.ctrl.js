@@ -3,7 +3,7 @@ angular.module('app')
   $scope.register = function(username, password) {
     UserSvc.register(username, password)
     .then(function(response) {
-      $location.path('/login').replace()
+      $location.path('/').replace()
     })
   }
 })
