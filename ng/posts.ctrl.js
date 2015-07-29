@@ -13,12 +13,8 @@ angular.module('app')
     WebSocketSvc.send('viewed_post', postid)
   }
 
-  $scope.viewedMessage = function(post) {
-    if (post.viewed) {
-      return 'Viewed'
-    } else {
-      return 'Not viewed'
-    }
+  $scope.markNotViewed = function(postid) {
+    WebSocketSvc.send('notviewed_post', postid)
   }
 
   $scope.$on('ws:new_post', function(_, post) {
@@ -32,6 +28,16 @@ angular.module('app')
       $scope.posts.forEach(function(p) {
         if (post._id === p._id) {
           p.viewed = true
+        }
+      })
+    })
+  })
+
+  $scope.$on('ws:marknotviewed_post', function(_, post) {
+    $scope.$apply(function() {
+      $scope.posts.forEach(function(p) {
+        if (post._id === p._id) {
+          p.viewed = false
         }
       })
     })

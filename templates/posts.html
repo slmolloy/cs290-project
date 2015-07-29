@@ -15,8 +15,16 @@
       <strong>@{{ post.username }}</strong>
       <span>{{ post.body }}</span>
       <span class="pull-right">
-        <button ng-if="!post.viewed" ng-click="markViewed(post._id)" class="btn btn-default btn-xs">Mark Viewed</button>
-        {{viewedMessage(post)}}
+        <span ng-if="!post.viewed">
+          <button ng-click="markViewed(post._id)" class="btn btn-default btn-xs">
+            <span class="glyphicon glyphicon-eye-open"></span> Mark read
+          </button>
+        </span>
+        <span ng-if="post.viewed">
+          <button ng-click="markNotViewed(post._id)" class="btn btn-default btn-xs">
+            <span class="glyphicon glyphicon-eye-close"></span> Mark unread
+          </button>
+        </span>
       </span>
     </li>
   </ul>

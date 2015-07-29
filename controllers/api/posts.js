@@ -32,6 +32,10 @@ pubsub.subscribe('markviewed_post', function(post) {
   websockets.broadcast('markviewed_post', post)
 })
 
+pubsub.subscribe('marknotviewed_post', function(post) {
+  websockets.broadcast('marknotviewed_post', post)
+})
+
 eventEmitter.on('ws:viewed_post', function(data) {
   Post.find({_id: db.toObjectId(data)})
   .exec(function(err, posts) {
@@ -40,6 +44,18 @@ eventEmitter.on('ws:viewed_post', function(data) {
     posts[0].save(function(err, post) {
       if (err) { return next(err) }
       pubsub.publish('markviewed_post', post)
+    })
+  })
+})
+
+eventEmitter.on('ws:notviewed_post', function(data) {
+  Post.find({_id: db.toObjectId(data)})
+  .exec(function(err, posts) {
+    if (err) { return next(err) }
+    posts[0].viewed = false
+    posts[0].save(function(err, post) {
+      if (err) { return next(err) }
+      pubsub.publish('marknotviewed_post', post)
     })
   })
 })
