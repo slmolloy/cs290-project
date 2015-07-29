@@ -24,8 +24,21 @@ router.post('/', function(req, res, next) {
   })
 })
 
+router.delete('/:id', function(req, res, next) {
+  var postid = db.toObjectId(req.params.id)
+  Post.find({_id: postid}).remove(function(err) {
+    if (err) { return next(err) }
+    pubsub.publish('delete_post', postid)
+    res.sendStatus(200)
+  })
+})
+
 pubsub.subscribe('new_post', function(post) {
   websockets.broadcast('new_post', post)
+})
+
+pubsub.subscribe('delete_post', function(postid) {
+  websockets.broadcast('delete_post', postid)
 })
 
 pubsub.subscribe('markviewed_post', function(post) {

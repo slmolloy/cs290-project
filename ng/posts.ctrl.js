@@ -9,6 +9,10 @@ angular.module('app')
     }
   }
 
+  $scope.remove = function(postid) {
+    PostsSvc.remove({body: postid})
+  }
+
   $scope.markViewed = function(postid) {
     WebSocketSvc.send('viewed_post', postid)
   }
@@ -20,6 +24,16 @@ angular.module('app')
   $scope.$on('ws:new_post', function(_, post) {
     $scope.$apply(function() {
       $scope.posts.unshift(post)
+    })
+  })
+
+  $scope.$on('ws:delete_post', function(_, postid) {
+    $scope.$apply(function() {
+      $scope.posts.forEach(function(p, i) {
+        if (postid === p._id) {
+          $scope.posts.splice(i, 1)
+        }
+      })
     })
   })
 
