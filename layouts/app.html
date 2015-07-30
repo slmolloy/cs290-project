@@ -12,12 +12,12 @@
       </ul>
       <ul class='nav navbar-nav navbar-right'>
         <li>
-          <a ng-if='hasCurrentUser()' href='/#/logout'>Logout</a>
-          <a ng-if='!hasCurrentUser()' href='/#/login'>Login</a>
+          <a class='logout' ng-if='hasCurrentUser()' href='/#/logout'>Logout</a>
+          <a class='login' ng-if='!hasCurrentUser()' href='/#/login'>Login</a>
         </li>
         <li>
           <p ng-if='hasCurrentUser()' class='navbar-text'>Signed in as {{currentUser.username}}</p>
-          <a ng-if='!hasCurrentUser()' href='/#/register'>Register</a>
+          <a class='register' ng-if='!hasCurrentUser()' href='/#/register'>Register</a>
         </li>
       </ul>
     </div>

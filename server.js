@@ -10,7 +10,7 @@ app.use('/api/posts', require('./controllers/api/posts'))
 app.use('/api/sessions', require('./controllers/api/sessions'))
 app.use('/api/users', require('./controllers/api/users'))
 
-var port = 3001
+var port = process.env.PORT || 3000
 var server = app.listen(port, function() {
   console.log('Server listening on', port)
 })
