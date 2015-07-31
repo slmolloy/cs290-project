@@ -11,7 +11,7 @@ angular.module('app')
   $scope.hasCurrentUser = function () {
     var token = $window.localStorage.getItem('token')
     var user = JSON.parse($window.localStorage.getItem('user'))
-    if (token == null || user == null) {
+    if (token === null || user === null) {
       delete $scope.currentUser
       return false
     } else {

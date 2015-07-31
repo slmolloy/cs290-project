@@ -39,7 +39,7 @@
     "node": "true"
   },
   "scripts": {
-    "test": "mocha && protractor",
+    "test": "jshint . && mocha -R html-cov > coverage.html && protractor",
     "lint": "jshint .",
     "build": "npm lint && npm test"
   }

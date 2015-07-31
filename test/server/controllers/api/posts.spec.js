@@ -1,3 +1,5 @@
+/* jshint expr: true */
+
 var expect = require('chai').expect
 var postsctrl = require('../../../../controllers/api/posts')
 

@@ -4,8 +4,7 @@ angular.module('app')
     request: function(config) {
       config.headers = config.headers || {}
       var token = $window.localStorage.getItem('token')
-      var user = JSON.parse(window.localStorage.getItem('user'))
-      if (token == null) {
+      if (token === null) {
         delete config.headers.authorization
       } else {
         config.headers.authorization = 'Bearer ' + token
