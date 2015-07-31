@@ -23,8 +23,11 @@
     "ws": "^0.7.2"
   },
   "devDependencies": {
+    "blanket": "^1.1.7",
     "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
+    "jshint": "^2.8.0",
+    "jsonwebtoken": "^5.0.4",
     "mocha": "^2.2.5",
     "morgan": "^1.6.1",
     "protractor": "^2.1.0",
@@ -32,6 +35,12 @@
   },
   "jshintConfig": {
     "asi": "false",
-    "lastsemic": "false"
+    "lastsemic": "false",
+    "node": "true"
+  },
+  "scripts": {
+    "test": "mocha && protractor",
+    "lint": "jshint .",
+    "build": "npm lint && npm test"
   }
 }
