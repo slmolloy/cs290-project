@@ -28,8 +28,13 @@
     "chai-as-promised": "^5.1.0",
     "jshint": "^2.8.0",
     "jsonwebtoken": "^5.0.4",
+    "karma": "^0.13.3",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
     "mocha": "^2.2.5",
     "morgan": "^1.6.1",
+    "phantomjs": "^1.9.17",
     "protractor": "^2.1.0",
     "supertest": "^1.0.1"
   },
@@ -39,7 +44,7 @@
     "node": "true"
   },
   "scripts": {
-    "test": "jshint . && mocha -R html-cov > coverage.html && protractor",
+    "test": "jshint . && mocha -R html-cov > coverage.html && protractor && karma start --single-run",
     "lint": "jshint .",
     "build": "npm lint && npm test"
   }

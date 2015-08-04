@@ -3,11 +3,16 @@ angular.module('app')
   $scope.addPost = function() {
     if ($scope.postBody) {
       PostsSvc.create({body: $scope.postBody})
-      .success(function(post) {
-        $scope.postBody = null
-      })
+        .then(function() {
+          $scope.postBody = null
+        })
     }
   }
+
+  PostsSvc.fetch()
+    .then(function(posts) {
+      $scope.posts = posts
+    })
 
   $scope.remove = function(postid) {
     PostsSvc.remove({body: postid})
@@ -56,9 +61,4 @@ angular.module('app')
       })
     })
   })
-
-  PostsSvc.fetch()
-    .success(function(posts) {
-      $scope.posts = posts
-    })
 })
