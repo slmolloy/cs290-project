@@ -17,7 +17,7 @@ describe('posts.ctrl', function() {
 
     mockPostsSvc.create = function() {
       var deferred = $q.defer()
-      deffered.resolve()
+      deferred.resolve()
       return deferred.promise
     }
   }))
@@ -36,7 +36,9 @@ describe('posts.ctrl', function() {
   })
 
   it('sends a new post to the service', function() {
-    $scope.post = {body: 'my new post'}
+    sinon.spy(mockPostsSvc, 'create')
+    $scope.postBody = 'my new post'
     $scope.addPost()
+    expect(mockPostsSvc.create).to.have.been.calledWith({body: 'my new post'})
   })
 })
