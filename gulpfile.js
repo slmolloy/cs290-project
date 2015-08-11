@@ -4,5 +4,5 @@ fs.readdirSync(__dirname + '/gulp').forEach(function(task) {
 })
 
 var gulp = require('gulp')
-gulp.task('dev', ['watch:css', 'watch:js', 'dev:server'])
-gulp.task('build', ['css', 'js'])
+gulp.task('dev', ['watch:css', 'watch:js', 'watch:images', 'dev:server'])
+gulp.task('build', ['css', 'js', 'images'])

@@ -8,6 +8,7 @@
     "bson": "^0.4.8",
     "events": "^1.0.2",
     "express": "^4.13.1",
+    "express-favicon": "^1.0.1",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-ng-annotate": "^1.0.0",
