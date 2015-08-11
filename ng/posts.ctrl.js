@@ -11,7 +11,7 @@ angular.module('app')
 
   PostsSvc.fetch()
     .then(function(posts) {
-      $scope.posts = posts
+      $scope.posts = posts.data
     })
 
   $scope.remove = function(postid) {
