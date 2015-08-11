@@ -47,6 +47,7 @@
   "scripts": {
     "test": "jshint . && mocha -R html-cov > coverage.html && protractor && karma start --single-run",
     "lint": "jshint .",
-    "build": "npm lint && npm test"
+    "build": "npm lint && npm test",
+    "postinstall": "gulp build"
   }
 }

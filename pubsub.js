@@ -3,7 +3,7 @@ var url = process.env.REDIS_URL || process.env.REDISTOGO_URL || 'redis://localho
 var host = require('url').parse(url)
 
 function newClient() {
-  var client = redis.createClient()
+  var client = redis.createClient(host.port, host.hostname)
   if (host.auth) {
     client.auth(host.auth.split(":")[1])
   }

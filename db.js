@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 var ObjectId = mongoose.Types.ObjectId
-mongoose.connect('mongodb://localhost/social', function () {
+var url = process.env.MONGOLAB_URI || 'mongodb://localhost/social'
+mongoose.connect(url, function () {
   //console.log('mongodb connected')
 })
 mongoose.toObjectId = function(data) {
