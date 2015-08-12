@@ -6,6 +6,9 @@ var websockets = require('../../websockets')
 var eventEmitter = websockets.eventEmitter
 
 router.get('/', function (req, res, next) {
+  if (req.auth === undefined || req.auth.username === undefined) {
+    return res.sendStatus(401)
+  }
   Post.find()
   .sort('-date')
   .exec(function(err, posts) {
@@ -15,6 +18,9 @@ router.get('/', function (req, res, next) {
 })
 
 router.post('/', function(req, res, next) {
+  if (req.auth === undefined || req.auth.username === undefined) {
+    return res.sendStatus(401)
+  }
   var post = new Post({body: req.body.body})
   post.username = req.auth.username
   post.save(function(err, post) {

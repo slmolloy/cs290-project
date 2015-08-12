@@ -5,7 +5,7 @@ var User = require('../../models/user')
 var config = require('../../config')
 
 router.get('/', function(req, res, next) {
-  if (!req.headers.authorization) {
+  if (req.auth === undefined || req.auth.username === undefined) {
     return res.sendStatus(401)
   }
   var auth = jwt.decode(req.headers.authorization.split(' ')[1], config.secret)
