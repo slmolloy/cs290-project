@@ -46,6 +46,7 @@
     "node": "true"
   },
   "scripts": {
+    "start": "node boot.js",
     "test": "jshint . && mocha -R html-cov > coverage.html && protractor && karma start --single-run",
     "lint": "jshint .",
     "build": "npm lint && npm test",
