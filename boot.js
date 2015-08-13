@@ -17,9 +17,7 @@ var stopping = false
 // Fork new workers unless stopping
 function forkNewWorkers() {
   if (!stopping) {
-    console.log('not stopping', numWorkers(), 'of', numCpus, 'running')
     for (var i = numWorkers(); i < numCpus; i++) {
-      console.log('forking new worker')
       cluster.fork()
     }
   }
@@ -31,12 +29,11 @@ var workersToStop = []
 // Stop a single worker
 // If snot stopped in 60 seconds, send SIGTERM
 function stopWorker(worker) {
-  console.log('stopping: ', worker.process.pid)
   worker.disconnect()
   var killTimer = setTimeout(function() {
     console.log('timout reached, killing working', worker.process.pid)
     worker.kill()
-  }, 600)
+  }, 60000)
   // unref ensures process doesn't stay up just for timeout
   killTimer.unref()
 }
@@ -59,14 +56,12 @@ function stopAllWorkers() {
 
 // When new worker is listening, signal the next worker to restart
 cluster.on('listening', function() {
-  console.log('new worker listening')
   stopNextWorker()
 })
 
 // A worker has disconnected for some reason
 // Call forkNewWorkers to create any new workers if needed
 cluster.on('exit', function() {
-  console.log('disconnecting worker')
   forkNewWorkers()
 })
 
