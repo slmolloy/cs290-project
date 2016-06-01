@@ -4,24 +4,7 @@
   <link rel='stylesheet' href='https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'>
   <link rel='stylesheet' href='/app.css'>
 </head>
-<body ng-app='app' ng-controller='ApplicationCtrl'>
-  <nav class='navbar navbar-default'>
-    <div class='container'>
-      <ul class='nav navbar-nav'>
-        <li><a href='/#/'>Posts</a></li>
-      </ul>
-      <ul class='nav navbar-nav navbar-right'>
-        <li>
-          <a class='logout' ng-if='hasCurrentUser()' href='/#/logout'>Logout</a>
-          <a class='login' ng-if='!hasCurrentUser()' href='/#/login'>Login</a>
-        </li>
-        <li>
-          <p ng-if='hasCurrentUser()' class='navbar-text'>Signed in as {{currentUser.username}}</p>
-          <a class='register' ng-if='!hasCurrentUser()' href='/#/register'>Register</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+<body ng-app='app' ng-controller='PostsCtrl'>
   <div ng-view></div>
   <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.js'></script>
   <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.js'></script>

@@ -3,29 +3,48 @@
   <form role='form'>
     <div class='form-group'>
       <div class='input-group'>
-        <input ng-model='postBody' class='form-control' />
-        <span class='input-group-btn'>
-          <button ng-click='addPost()' class='btn btn-default'>Add Post</button>
-        </span>
+        <label>Name: <input ng-model='name' class='form-control' /></label>
       </div>
+      <div class='input-group'>
+        <label>Reps: <input ng-model='reps' class='form-control' /></label>
+      </div>
+      <div class='input-group'>
+        <label>Weight: <input ng-model='weight' class='form-control' /></label>
+      </div>
+      <div class='input-group'>
+        <label>Units: <input ng-model='units' class='form-control' /></label>
+      </div>
+      <span class='input-group-btn'>
+        <button ng-click='addPost()' class='btn btn-default'>Add Post</button>
+      </span>
     </div>
   </form>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Reps</th>
+      <th>Weight</th>
+      <th>Units</th>
+      <th>Date</th>
+      <th></th>
+    </thead>
+    <tr ng-repeat="post in posts | orderBy:'-date'">
+      <td>{{post.name}}</td>
+      <td>{{post.reps}}</td>
+      <td>{{post.weight}}</td>
+      <td>{{post.units}}</td>
+      <td>{{post.date}}</td>
+      <td>
+        <button ng-click="remove(post._id)" class="btn btn-default btn-xs">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+      </td>
+    </tr>
+  </table>
   <ul class='list-group'>
     <li ng-repeat="post in posts | orderBy:'-date'" class='list-group-item'>
-      <strong>@{{ post.username }}</strong>
-      <span>{{ post.body }}</span>
+      <span>{{ post.name }} -- {{ post.reps }} -- {{ post.weight }} -- {{ post.units }}</span>
       <span class="pull-right">
-        <small><time title="{{ post.date | amDateFormat: 'dddd, MMMM, Do YYYY, h:mm a' }}" am-time-ago="post.date"></time></small>
-        <span ng-if="!post.viewed">
-          <button ng-click="markViewed(post._id)" class="btn btn-default btn-xs">
-            <span class="glyphicon glyphicon-eye-open"></span> Mark read
-          </button>
-        </span>
-        <span ng-if="post.viewed">
-          <button ng-click="markNotViewed(post._id)" class="btn btn-default btn-xs">
-            <span class="glyphicon glyphicon-eye-close"></span> Mark unread
-          </button>
-        </span>
         <button ng-click="remove(post._id)" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-trash"></span>
         </button>

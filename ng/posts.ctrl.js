@@ -1,10 +1,18 @@
 angular.module('app')
-.controller('PostsCtrl', function($scope, PostsSvc, WebSocketSvc) {
+.controller('PostsCtrl', function($scope, PostsSvc) {
   $scope.addPost = function() {
-    if ($scope.postBody) {
-      PostsSvc.create({body: $scope.postBody})
+    if ($scope.name && $scope.reps && $scope.weight && $scope.units) {
+      PostsSvc.create({
+        name: $scope.name,
+        reps: $scope.reps,
+        weight: $scope.weight,
+        units: $scope.units
+      })
         .then(function() {
-          $scope.postBody = null
+          $scope.name = null
+          $scope.reps = null
+          $scope.weight = null
+          $scope.units = null
         })
     }
   }
@@ -18,14 +26,6 @@ angular.module('app')
     PostsSvc.remove({body: postid})
   }
 
-  $scope.markViewed = function(postid) {
-    WebSocketSvc.send('viewed_post', postid)
-  }
-
-  $scope.markNotViewed = function(postid) {
-    WebSocketSvc.send('notviewed_post', postid)
-  }
-
   $scope.$on('ws:new_post', function(_, post) {
     $scope.$apply(function() {
       $scope.posts.unshift(post)
@@ -37,26 +37,6 @@ angular.module('app')
       $scope.posts.forEach(function(p, i) {
         if (postid === p._id) {
           $scope.posts.splice(i, 1)
-        }
-      })
-    })
-  })
-
-  $scope.$on('ws:markviewed_post', function(_, post) {
-    $scope.$apply(function() {
-      $scope.posts.forEach(function(p) {
-        if (post._id === p._id) {
-          p.viewed = true
-        }
-      })
-    })
-  })
-
-  $scope.$on('ws:marknotviewed_post', function(_, post) {
-    $scope.$apply(function() {
-      $scope.posts.forEach(function(p) {
-        if (post._id === p._id) {
-          p.viewed = false
         }
       })
     })

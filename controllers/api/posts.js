@@ -3,12 +3,8 @@ var db = require('../../db')
 var router = require('express').Router()
 var pubsub = require('../../pubsub')
 var websockets = require('../../websockets')
-var eventEmitter = websockets.eventEmitter
 
 router.get('/', function (req, res, next) {
-  if (req.auth === undefined || req.auth.username === undefined) {
-    return res.sendStatus(401)
-  }
   Post.find()
   .sort('-date')
   .exec(function(err, posts) {
@@ -18,11 +14,13 @@ router.get('/', function (req, res, next) {
 })
 
 router.post('/', function(req, res, next) {
-  if (req.auth === undefined || req.auth.username === undefined) {
-    return res.sendStatus(401)
-  }
-  var post = new Post({body: req.body.body})
-  post.username = req.auth.username
+  var post = new Post({
+    name: req.body.name,
+    reps: req.body.reps,
+    weight: req.body.weight,
+    date: Date.now(),
+    units: req.body.units
+  })
   post.save(function(err, post) {
     if (err) { return next(err) }
     pubsub.publish('new_post', post)
@@ -45,38 +43,6 @@ pubsub.subscribe('new_post', function(post) {
 
 pubsub.subscribe('delete_post', function(postid) {
   websockets.broadcast('delete_post', postid)
-})
-
-pubsub.subscribe('markviewed_post', function(post) {
-  websockets.broadcast('markviewed_post', post)
-})
-
-pubsub.subscribe('marknotviewed_post', function(post) {
-  websockets.broadcast('marknotviewed_post', post)
-})
-
-eventEmitter.on('ws:viewed_post', function(data) {
-  Post.find({_id: db.toObjectId(data)})
-  .exec(function(err, posts) {
-    if (err) { return next(err) }
-    posts[0].viewed = true
-    posts[0].save(function(err, post) {
-      if (err) { return next(err) }
-      pubsub.publish('markviewed_post', post)
-    })
-  })
-})
-
-eventEmitter.on('ws:notviewed_post', function(data) {
-  Post.find({_id: db.toObjectId(data)})
-  .exec(function(err, posts) {
-    if (err) { return next(err) }
-    posts[0].viewed = false
-    posts[0].save(function(err, post) {
-      if (err) { return next(err) }
-      pubsub.publish('marknotviewed_post', post)
-    })
-  })
 })
 
 module.exports = router

@@ -1,8 +1,9 @@
 var db = require('../db')
 var Post = db.model('Post', {
-  username: { type: String, required: true },
-  body:     { type: String, required: true },
-  viewed:   { type: Boolean, required: true, default: false },
-  date:     { type: Date, required: true, default: Date.now }
+  name:     { type: String, required: true },
+  reps:     { type: Number, required: true, default: 0 },
+  weight:   { type: Number, required: true, default: 0 },
+  date:     { type: Date, required: true, default: Date.now() },
+  units:    { type: Number, required: true, default: 1 }
 })
 module.exports = Post
