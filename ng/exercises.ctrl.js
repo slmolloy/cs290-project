@@ -1,8 +1,8 @@
 angular.module('app')
-.controller('PostsCtrl', function($scope, PostsSvc) {
+.controller('ExercisesCtrl', function($scope, ExercisesSvc) {
   $scope.addPost = function() {
     if ($scope.name && $scope.reps && $scope.weight && $scope.units) {
-      PostsSvc.create({
+      ExercisesSvc.create({
         name: $scope.name,
         reps: $scope.reps,
         weight: $scope.weight,
@@ -17,13 +17,13 @@ angular.module('app')
     }
   }
 
-  PostsSvc.fetch()
+  ExercisesSvc.fetch()
     .then(function(posts) {
       $scope.posts = posts.data
     })
 
-  $scope.remove = function(postid) {
-    PostsSvc.remove({body: postid})
+  $scope.remove = function(exerciseid) {
+    ExercisesSvc.remove({body: exerciseid})
   }
 
   $scope.$on('ws:new_post', function(_, post) {
@@ -32,10 +32,10 @@ angular.module('app')
     })
   })
 
-  $scope.$on('ws:delete_post', function(_, postid) {
+  $scope.$on('ws:delete_post', function(_, exerciseid) {
     $scope.$apply(function() {
       $scope.posts.forEach(function(p, i) {
-        if (postid === p._id) {
+        if (exerciseid === p._id) {
           $scope.posts.splice(i, 1)
         }
       })

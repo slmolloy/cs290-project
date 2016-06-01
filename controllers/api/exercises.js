@@ -1,48 +1,48 @@
-var Post = require('../../models/post')
+var Exercise = require('../../models/exercise')
 var db = require('../../db')
 var router = require('express').Router()
 var pubsub = require('../../pubsub')
 var websockets = require('../../websockets')
 
 router.get('/', function (req, res, next) {
-  Post.find()
+  Exercise.find()
   .sort('-date')
-  .exec(function(err, posts) {
+  .exec(function(err, exercises) {
     if (err) { return next(err) }
-    res.json(posts)
+    res.json(exercises)
   })
 })
 
 router.post('/', function(req, res, next) {
-  var post = new Post({
+  var post = new Exercise({
     name: req.body.name,
     reps: req.body.reps,
     weight: req.body.weight,
     date: Date.now(),
     units: req.body.units
   })
-  post.save(function(err, post) {
+  post.save(function(err, exercise) {
     if (err) { return next(err) }
-    pubsub.publish('new_post', post)
-    res.status(201).json(post)
+    pubsub.publish('new_post', exercise)
+    res.status(201).json(exercise)
   })
 })
 
 router.delete('/:id', function(req, res, next) {
-  var postid = db.toObjectId(req.params.id)
-  Post.find({_id: postid}).remove(function(err) {
+  var exerciseid = db.toObjectId(req.params.id)
+  Exercise.find({_id: exerciseid}).remove(function(err) {
     if (err) { return next(err) }
-    pubsub.publish('delete_post', postid)
+    pubsub.publish('delete_post', exerciseid)
     res.sendStatus(200)
   })
 })
 
-pubsub.subscribe('new_post', function(post) {
-  websockets.broadcast('new_post', post)
+pubsub.subscribe('new_post', function(exercise) {
+  websockets.broadcast('new_post', exercise)
 })
 
-pubsub.subscribe('delete_post', function(postid) {
-  websockets.broadcast('delete_post', postid)
+pubsub.subscribe('delete_post', function(exerciseid) {
+  websockets.broadcast('delete_post', exerciseid)
 })
 
 module.exports = router
