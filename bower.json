@@ -1,20 +1,17 @@
 {
-  "name": "socialapp",
+  "name": "workouts",
   "version": "0.0.0",
   "authors": [
     "Scott Molloy <scott.l.molloy@gmail.com>"
   ],
-  "description": "App for creating social posts.",
+  "description": "App for listinig exercises.",
   "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "bower_components"
   ],
   "dependencies": {
-    "angular-route": "~1.4.3",
-    "angular-mocks": "~1.4.3"
+    "angular-route": "~1.4.3"
   }
 }

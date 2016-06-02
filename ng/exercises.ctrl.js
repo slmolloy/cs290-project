@@ -18,25 +18,25 @@ angular.module('app')
   }
 
   ExercisesSvc.fetch()
-    .then(function(posts) {
-      $scope.posts = posts.data
+    .then(function(exercises) {
+      $scope.exercises = exercises.data
     })
 
   $scope.remove = function(exerciseid) {
     ExercisesSvc.remove({body: exerciseid})
   }
 
-  $scope.$on('ws:new_post', function(_, post) {
+  $scope.$on('ws:new_exercise', function(_, exercise) {
     $scope.$apply(function() {
-      $scope.posts.unshift(post)
+      $scope.exercises.unshift(exercise)
     })
   })
 
-  $scope.$on('ws:delete_post', function(_, exerciseid) {
+  $scope.$on('ws:delete_exercise', function(_, exerciseid) {
     $scope.$apply(function() {
-      $scope.posts.forEach(function(p, i) {
+      $scope.exercises.forEach(function(p, i) {
         if (exerciseid === p._id) {
-          $scope.posts.splice(i, 1)
+          $scope.exercises.splice(i, 1)
         }
       })
     })
