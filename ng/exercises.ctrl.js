@@ -2,8 +2,9 @@ angular.module('app')
 .controller('ExercisesCtrl', function($scope, ExercisesSvc) {
   $scope.lbs = 1;
   $scope.selected = {};
+
   $scope.addExercise = function() {
-    if ($scope.name && $scope.reps && $scope.weight) {
+    if ($scope.newExercise.$valid) {
       ExercisesSvc.create({
         name: $scope.name,
         reps: $scope.reps,

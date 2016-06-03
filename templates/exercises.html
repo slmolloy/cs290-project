@@ -1,15 +1,15 @@
 <div class='container'>
   <h1>Exercises</h1>
-  <form role='form'>
+  <form role='form' name="newExercise">
     <div class='form-group'>
       <div>
-        <label>Name: <input ng-model='name' class='form-control input-medium' /></label>
+        <label>Name: <input ng-model='name' class='form-control input-medium' required /></label>
       </div>
       <div>
-        <label>Reps: <input ng-model='reps' class='form-control input-small' type="number" /></label>
+        <label>Reps: <input ng-model='reps' class='form-control input-small' type="number" required /></label>
       </div>
       <div>
-        <label>Weight: <input ng-model='weight' class='form-control input-small' type="number" /></label>
+        <label>Weight: <input ng-model='weight' class='form-control input-small' type="number" required /></label>
       </div>
       <div>
         <label>Units:
@@ -32,7 +32,7 @@
       <th>Date</th>
       <th></th>
     </thead>
-    <tr ng-repeat="exercise in exercises | orderBy:'-date'" ng-include="getTemplate(exercise)">
+    <tr ng-repeat="exercise in exercises | orderBy:'id'" ng-include="getTemplate(exercise)">
     </tr>
   </table>
 
