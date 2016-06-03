@@ -1,6 +1,33 @@
 # Exercises Project
 Project for tracking exercises
 
+# Running the Project
+Install npm and bower dependencies.
+```bash
+npm install
+bower install
+```
+If bower is not installed
+```bash
+sudo npm install bower -g
+```
+Then build the project with gulp
+```bash
+gulp build
+```
+If gulp is not installed
+```bash
+sudo npm install gulp -g
+```
+After build, start the app with
+```bash
+node server.js
+```
+Alternatively can use the gulp task to monitor for changes
+```bash
+gulp dev
+```
+
 # Database Setup
 Install mysql. Provide root password during install.
 ```bash
