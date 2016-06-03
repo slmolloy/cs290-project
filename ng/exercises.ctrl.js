@@ -1,18 +1,21 @@
 angular.module('app')
 .controller('ExercisesCtrl', function($scope, ExercisesSvc) {
-  $scope.addPost = function() {
-    if ($scope.name && $scope.reps && $scope.weight && $scope.units) {
+  $scope.addExercise = function() {
+    console.log('addExercise');
+    if ($scope.name && $scope.reps && $scope.weight && $scope.lbs) {
+      console.log('scopes good');
       ExercisesSvc.create({
         name: $scope.name,
         reps: $scope.reps,
         weight: $scope.weight,
-        units: $scope.units
+        lbs: $scope.lbs
       })
         .then(function() {
+          console.log('successful create');
           $scope.name = null
           $scope.reps = null
           $scope.weight = null
-          $scope.units = null
+          $scope.lbs = null
         })
     }
   }
@@ -20,6 +23,7 @@ angular.module('app')
   ExercisesSvc.fetch()
     .then(function(exercises) {
       $scope.exercises = exercises.data
+      console.log($scope.exercises);
     })
 
   $scope.remove = function(exerciseid) {

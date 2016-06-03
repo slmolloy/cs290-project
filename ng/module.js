@@ -1,4 +1,3 @@
 angular.module('app', [
-  'ngRoute',
-  'angularMoment'
+  'ngRoute'
 ])

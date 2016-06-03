@@ -13,27 +13,30 @@ router.get('/', function (req, res, next) {
     }
     res.json(rows);
   });
-  // Exercise.find()
-  // .sort('-date')
-  // .exec(function(err, exercises) {
-  //   if (err) { return next(err) }
-  //   res.json(exercises)
-  // })
 });
 
 router.post('/', function(req, res, next) {
-  var exercise = new Exercise({
-    name: req.body.name,
-    reps: req.body.reps,
-    weight: req.body.weight,
-    date: Date.now(),
-    units: req.body.units
-  })
-  exercise.save(function(err, exercise) {
-    if (err) { return next(err) }
-    pubsub.publish('new_exercise', exercise)
-    res.status(201).json(exercise)
-  })
+  console.log('post handling');
+  db.pool.query('INSERT INTO workouts (`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?, ?, ?, ?, ?)',
+      [req.body.name, req.body.reps, req.body.weight, Date.now(), req.body.lbs], function(err, result) {
+    if (err) {
+       next(err);
+      return;
+    }
+    res.json(result);
+  });
+  // var exercise = new Exercise({
+  //   name: req.body.name,
+  //   reps: req.body.reps,
+  //   weight: req.body.weight,
+  //   date: Date.now(),
+  //   units: req.body.units
+  // })
+  // exercise.save(function(err, exercise) {
+  //   if (err) { return next(err) }
+  //   pubsub.publish('new_exercise', exercise)
+  //   res.status(201).json(exercise)
+  // })
 })
 
 router.delete('/:id', function(req, res, next) {

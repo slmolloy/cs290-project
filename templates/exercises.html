@@ -1,5 +1,5 @@
 <div class='container'>
-  <h1>Recent Posts</h1>
+  <h1>Recent exercises</h1>
   <form role='form'>
     <div class='form-group'>
       <div class='input-group'>
@@ -15,7 +15,7 @@
         <label>Units: <input ng-model='units' class='form-control' /></label>
       </div>
       <span class='input-group-btn'>
-        <button ng-click='addPost()' class='btn btn-default'>Add Post</button>
+        <button ng-click='addExercise()' class='btn btn-default'>Add exercise</button>
       </span>
     </div>
   </form>
@@ -24,18 +24,18 @@
       <th>Name</th>
       <th>Reps</th>
       <th>Weight</th>
-      <th>Units</th>
+      <th>Lbs</th>
       <th>Date</th>
       <th></th>
     </thead>
-    <tr ng-repeat="post in posts | orderBy:'-date'">
-      <td>{{post.name}}</td>
-      <td>{{post.reps}}</td>
-      <td>{{post.weight}}</td>
-      <td>{{post.units}}</td>
-      <td>{{post.date}}</td>
+    <tr ng-repeat="exercise in exercises | orderBy:'-date'">
+      <td>{{exercise.name}}</td>
+      <td>{{exercise.reps}}</td>
+      <td>{{exercise.weight}}</td>
+      <td>{{exercise.lbs}}</td>
+      <td>{{exercise.date}}</td>
       <td>
-        <button ng-click="remove(post._id)" class="btn btn-default btn-xs">
+        <button ng-click="remove(exercise._id)" class="btn btn-default btn-xs">
           <span class="glyphicon glyphicon-trash"></span>
         </button>
       </td>
