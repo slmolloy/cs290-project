@@ -37,9 +37,13 @@ angular.module('app')
     $scope.selected = {};
   };
 
-  $scope.save = function(index) {
+  $scope.save = function(exercise) {
     ExercisesSvc.update($scope.selected);
-    $scope.exercises[index] = angular.copy($scope.selected);
+    $scope.exercises.forEach(function(p, i) {
+      if ($scope.selected.id === p.id) {
+        $scope.exercises[i] = angular.copy($scope.selected);
+      }
+    });
     $scope.cancel();
   };
 
