@@ -1,11 +1,9 @@
-//var Exercise = require('../../models/exercise')
-var db = require('../../db')
-var router = require('express').Router()
-var pubsub = require('../../pubsub')
-var websockets = require('../../websockets')
+var db = require('../../db');
+var router = require('express').Router();
+var websockets = require('../../websockets');
+var moment = require('moment');
 
 router.get('/', function (req, res, next) {
-  console.log('getting workouts');
   db.pool.query('SELECT * FROM workouts', function(err, rows, fields) {
     if (err) {
       next(err);
@@ -16,44 +14,51 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  console.log('post handling');
   db.pool.query('INSERT INTO workouts (`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?, ?, ?, ?, ?)',
-      [req.body.name, req.body.reps, req.body.weight, Date.now(), req.body.lbs], function(err, result) {
+      [req.body.name, req.body.reps, req.body.weight, moment().format('YYYY-MM-DD'), req.body.lbs], function(err, result) {
     if (err) {
        next(err);
       return;
     }
-    res.json(result);
+    db.pool.query('SELECT * FROM workouts WHERE id=?', [result.insertId], function(err, result) {
+      if (err) {
+        next(err);
+        return;
+      }
+      websockets.broadcast('new_exercise', result[0]);
+      res.status(201).json(result);
+    });
   });
-  // var exercise = new Exercise({
-  //   name: req.body.name,
-  //   reps: req.body.reps,
-  //   weight: req.body.weight,
-  //   date: Date.now(),
-  //   units: req.body.units
-  // })
-  // exercise.save(function(err, exercise) {
-  //   if (err) { return next(err) }
-  //   pubsub.publish('new_exercise', exercise)
-  //   res.status(201).json(exercise)
-  // })
-})
+});
 
 router.delete('/:id', function(req, res, next) {
-  var exerciseid = db.toObjectId(req.params.id)
-  Exercise.find({_id: exerciseid}).remove(function(err) {
-    if (err) { return next(err) }
-    pubsub.publish('delete_exercise', exerciseid)
-    res.sendStatus(200)
-  })
-})
+  var exerciseid = req.params.id;
+  db.pool.query('DELETE FROM workouts WHERE id=?', [exerciseid], function(err, result) {
+    if (err) {
+      next(err);
+      return;
+    }
+    websockets.broadcast('delete_exercise', exerciseid);
+    res.sendStatus(200);
+  });
+});
 
-pubsub.subscribe('new_exercise', function(exercise) {
-  websockets.broadcast('new_exercise', exercise)
-})
+router.put('/:id', function(req, res, next) {
+  var exerciseid = req.params.id;
+  db.pool.query('UPDATE workouts SET name=?, reps=?, weight=?, date=?, lbs=? WHERE id=?',
+    [req.body.name, req.body.reps, req.body.weight, req.body.date, req.body.lbs, exerciseid], function(err, result) {
+      if (err) {
+        next(err);
+        return;
+      }
+      db.pool.query('SELECT * FROM workouts WHERE id=?', [exerciseid], function(err, result) {
+        if (err) {
+          next(err);
+          return;
+        }
+        res.status(201).json(result[0]);
+      });
+    });
+});
 
-pubsub.subscribe('delete_exercise', function(exerciseid) {
-  websockets.broadcast('delete_exercise', exerciseid)
-})
-
-module.exports = router
+module.exports = router;

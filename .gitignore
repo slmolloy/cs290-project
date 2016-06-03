@@ -3,3 +3,4 @@ assets/
 node_modules/
 coverage.html
 npm-debug.log
+_book

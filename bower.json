@@ -4,7 +4,7 @@
   "authors": [
     "Scott Molloy <scott.l.molloy@gmail.com>"
   ],
-  "description": "App for listinig exercises.",
+  "description": "App for listing exercises",
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -12,6 +12,8 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular-route": "~1.4.3"
+    "angular-route": "~1.4.3",
+    "moment": "~2.10.6",
+    "angular-moment": "^0.10.3"
   }
 }

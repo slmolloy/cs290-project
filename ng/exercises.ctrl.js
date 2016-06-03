@@ -1,9 +1,9 @@
 angular.module('app')
 .controller('ExercisesCtrl', function($scope, ExercisesSvc) {
+  $scope.lbs = 1;
+  $scope.selected = {};
   $scope.addExercise = function() {
-    console.log('addExercise');
-    if ($scope.name && $scope.reps && $scope.weight && $scope.lbs) {
-      console.log('scopes good');
+    if ($scope.name && $scope.reps && $scope.weight) {
       ExercisesSvc.create({
         name: $scope.name,
         reps: $scope.reps,
@@ -11,38 +11,58 @@ angular.module('app')
         lbs: $scope.lbs
       })
         .then(function() {
-          console.log('successful create');
-          $scope.name = null
-          $scope.reps = null
-          $scope.weight = null
-          $scope.lbs = null
-        })
+          $scope.name = null;
+          $scope.reps = null;
+          $scope.weight = null;
+          $scope.lbs = 1;
+        });
     }
-  }
+  };
 
   ExercisesSvc.fetch()
     .then(function(exercises) {
-      $scope.exercises = exercises.data
-      console.log($scope.exercises);
-    })
+      $scope.exercises = exercises.data;
+    });
 
-  $scope.remove = function(exerciseid) {
-    ExercisesSvc.remove({body: exerciseid})
-  }
+  $scope.remove = function(exercise) {
+    ExercisesSvc.remove({body: exercise.id});
+  };
+
+  $scope.edit = function(exercise) {
+    $scope.selected = angular.copy(exercise);
+  };
+
+  $scope.cancel = function() {
+    $scope.selected = {};
+  };
+
+  $scope.save = function(index) {
+    ExercisesSvc.update($scope.selected);
+    $scope.exercises[index] = angular.copy($scope.selected);
+    $scope.cancel();
+  };
+
+  $scope.getTemplate = function(exercise) {
+    if (exercise.id === $scope.selected.id) {
+      return 'edit';
+    } else {
+      return 'view';
+    }
+  };
 
   $scope.$on('ws:new_exercise', function(_, exercise) {
     $scope.$apply(function() {
-      $scope.exercises.unshift(exercise)
-    })
-  })
+      $scope.exercises.unshift(exercise);
+    });
+  });
 
   $scope.$on('ws:delete_exercise', function(_, exerciseid) {
     $scope.$apply(function() {
       $scope.exercises.forEach(function(p, i) {
-        if (exerciseid === p._id) {
-          $scope.exercises.splice(i, 1)
+        if (Number(exerciseid) === p.id) {
+          $scope.exercises.splice(i, 1);
         }
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

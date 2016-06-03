@@ -2,43 +2,77 @@
   <h1>Recent exercises</h1>
   <form role='form'>
     <div class='form-group'>
-      <div class='input-group'>
-        <label>Name: <input ng-model='name' class='form-control' /></label>
+      <div>
+        <label>Name: <input ng-model='name' class='form-control input-medium' /></label>
       </div>
-      <div class='input-group'>
-        <label>Reps: <input ng-model='reps' class='form-control' /></label>
+      <div>
+        <label>Reps: <input ng-model='reps' class='form-control input-small' type="number" /></label>
       </div>
-      <div class='input-group'>
-        <label>Weight: <input ng-model='weight' class='form-control' /></label>
+      <div>
+        <label>Weight: <input ng-model='weight' class='form-control input-small' type="number" /></label>
       </div>
-      <div class='input-group'>
-        <label>Units: <input ng-model='units' class='form-control' /></label>
+      <div>
+        <label>Units:
+          <label><input type='radio' name='unit' ng-model='lbs' ng-value='1'> lbs</label>
+          <label><input type='radio' name='unit' ng-model='lbs' ng-value='0'> kg</label>
+        </label>
       </div>
-      <span class='input-group-btn'>
-        <button ng-click='addExercise()' class='btn btn-default'>Add exercise</button>
-      </span>
+      <div>
+        <span class='input-group-btn'>
+          <button ng-click='addExercise()' class='btn btn-default'>Add exercise</button>
+        </span>
+      </div>
     </div>
   </form>
   <table>
     <thead>
       <th>Name</th>
       <th>Reps</th>
-      <th>Weight</th>
-      <th>Lbs</th>
+      <th colspan="2">Weight</th>
       <th>Date</th>
       <th></th>
     </thead>
-    <tr ng-repeat="exercise in exercises | orderBy:'-date'">
-      <td>{{exercise.name}}</td>
-      <td>{{exercise.reps}}</td>
-      <td>{{exercise.weight}}</td>
-      <td>{{exercise.lbs}}</td>
-      <td>{{exercise.date}}</td>
-      <td>
-        <button ng-click="remove(exercise._id)" class="btn btn-default btn-xs">
-          <span class="glyphicon glyphicon-trash"></span>
-        </button>
-      </td>
+    <tr ng-repeat="exercise in exercises | orderBy:'-date'" ng-include="getTemplate(exercise)">
     </tr>
   </table>
+
+  <script type="text/ng-template" id="view">
+    <td>{{exercise.name}}</td>
+    <td>{{exercise.reps}}</td>
+    <td colspan="2">{{exercise.weight}} {{exercise.lbs ? 'lbs' : 'kg'}}</td>
+    <td>{{exercise.date | amDateFormat: 'MM/DD/YYYY'}}</td>
+    <td>
+      <button ng-click="edit(exercise)" class="btn btn-default btn-xs">
+        <span class="glyphicon glyphicon-edit"></span>
+      </button>
+      <button ng-click="remove(exercise)" class="btn btn-default btn-xs">
+        <span class="glyphicon glyphicon-trash"></span>
+      </button>
+    </td>
+  </script>
+
+  <script type="text/ng-template" id="edit">
+    <td>
+      <label><input ng-model='selected.name' class='form-control input-medium' /></label>
+    </td>
+    <td>
+      <label><input ng-model='selected.reps' class='form-control input-small' type="number" /></label>
+    </td>
+    <td>
+      <label><input ng-model='selected.weight' class='form-control input-small' type="number" /></label>
+    </td>
+    <td>
+      <label><input type='radio' name='unit' ng-model='selected.lbs' ng-value='1'> lbs</label>
+      <label><input type='radio' name='unit' ng-model='selected.lbs' ng-value='0'> kg</label>
+    </td>
+    <td>{{exercise.date | amDateFormat: 'MM/DD/YYYY'}}</td>
+    <td>
+      <button ng-click="cancel()" class="btn btn-default btn-xs">
+        <span class="glyphicon glyphicon-remove"></span>
+      </button>
+      <button ng-click="save($index)" class="btn btn-default btn-xs">
+        <span class="glyphicon glyphicon-ok"></span>
+      </button>
+    </td>
+  </script>
 </div>
