@@ -32,7 +32,7 @@
       <th>Date</th>
       <th></th>
     </thead>
-    <tr ng-repeat="exercise in exercises | orderBy:'id'" ng-include="getTemplate(exercise)">
+    <tr ng-repeat="exercise in exercises | orderBy:'-id'" ng-include="getTemplate(exercise)">
     </tr>
   </table>
 
